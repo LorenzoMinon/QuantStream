@@ -1,0 +1,12 @@
+# Ignorar carpetas de Terraform (los binarios pesados)
+**/.terraform/
+
+# Ignorar archivos de estado (tienen info sensible)
+*.tfstate
+*.tfstate.backup
+
+# Ignorar archivos de bloqueo
+.terraform.lock.hcl
+
+# Ignorar carpeta de ideas de VS Code
+.vscode/
