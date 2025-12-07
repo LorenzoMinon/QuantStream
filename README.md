@@ -1,13 +1,1 @@
-# QuantStream
-aws:
-aws configure, add access key !
 
-
-terraform:
-winget install -e --id Hashicorp.Terraform
-then
-terraform build >> terraform apply.
-
-apache airflow:
-docker compose up airflow-init
-docker compose up -d (use down when deleting old one)
