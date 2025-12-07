@@ -10,3 +10,9 @@
 
 # Ignorar carpeta de ideas de VS Code
 .vscode/
+
+logs/
+plugins/
+*.log
+
+.env
