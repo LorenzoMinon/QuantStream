@@ -2,7 +2,7 @@ provider "aws" {
   region = "us-east-1" 
 }
 
-# 1. EL BUCKET (La caja fuerte principal)
+# 1. Create the bucket
 resource "aws_s3_bucket" "data_lake" {
   bucket = "quantstream-lake-lorenzo-2026"
 
@@ -15,7 +15,7 @@ resource "aws_s3_bucket" "data_lake" {
   }
 }
 
-# 2. EL CANDADO (Seguridad)
+# restrict public acc
 resource "aws_s3_bucket_public_access_block" "public_access" {
   bucket = aws_s3_bucket.data_lake.id
 
@@ -25,8 +25,8 @@ resource "aws_s3_bucket_public_access_block" "public_access" {
   restrict_public_buckets = true
 }
 
-# 3. LAS CARPETAS (Bronze, Silver, Gold)
-# Usamos content="" para crear una "carpeta vacía" compatible con Windows
+# 3. folders in a block !
+# content is for windows 
 
 resource "aws_s3_object" "bronze" {
   bucket  = aws_s3_bucket.data_lake.id
@@ -46,7 +46,6 @@ resource "aws_s3_object" "gold" {
   content = ""
 }
 
-# 4. EL MENSAJE FINAL
 output "nombre_del_bucket" {
   value = aws_s3_bucket.data_lake.id
 }
