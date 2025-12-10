@@ -69,3 +69,20 @@ services:
       timeout: 10s
       retries: 5
     restart: always
+
+  webapp:
+    build: ./app
+    container_name: quantstream-webapp
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./app:/app  # Hot-reloading
+    environment:
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_DB=airflow
+      - POSTGRES_HOST=postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: always
