@@ -1,6 +1,7 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.providers.amazon.aws.hooks.s3 import S3Hook
+from airflow.providers.amazon.aws.operators.glue_crawler import GlueCrawlerOperator
 from datetime import datetime
 import requests
 import json
@@ -10,6 +11,8 @@ import io
 
 # config
 BUCKET_NAME = "quantstream-lake-lorenzo-2026"
+GLUE_CRAWLER_NAME = "quantstream_silver_crawler"
+
 
 default_args = {
     'owner': 'Lorenzo',
@@ -74,11 +77,11 @@ def transform_to_silver(**context):
     logging.info(f"✨ Silver !: {dest_key}")
 
 with DAG(
-    dag_id='03_btc_etl_bronze_silver',
+    dag_id='04_btc_etl_full_automation',
     default_args=default_args,
     schedule_interval='@daily',
     catchup=False,
-    tags=['etl', 'crypto', 'bronze', 'silver']
+    tags=['etl', 'crypto', 'glue']
 ) as dag:
 
     # Task 1 : ingest
@@ -94,6 +97,12 @@ with DAG(
         python_callable=transform_to_silver,
         provide_context=True
     )
-
+    # Task 3: catalog
+    trigger_crawler = GlueCrawlerOperator(
+        task_id='trigger_glue_crawler',
+        config={'Name': GLUE_CRAWLER_NAME},
+        aws_conn_id='aws_default',
+        wait_for_completion=True # wait to finish
+    )
     # define order, first extract and then transform
     extract_task >> transform_task
