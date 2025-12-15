@@ -8,11 +8,24 @@
 # Ignorar archivos de bloqueo
 .terraform.lock.hcl
 
-# Ignorar carpeta de ideas de VS Code
-.vscode/
-
 logs/
 plugins/
 *.log
 
+# Python
+__pycache__/
+*.py[cod]
+.venv
+venv/
+
 .env
+.env.local
+
+
+# Docker volumes 
+postgres_data/
+app_data/
+
+# IDE settings
+.vscode/
+.idea/
