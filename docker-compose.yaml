@@ -14,7 +14,7 @@ x-airflow-common:
     AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
     AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
     AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
-    ALPHAVANTAGE_KEY: "6EFBH8KYFD8R8L6S"
+    ALPHAVANTAGE_KEY: ${ALPHAVANTAGE_KEY}
     _PIP_ADDITIONAL_REQUIREMENTS: pandas pyarrow psycopg2-binary yfinance==0.2.40
   volumes:
     - ./dags:/opt/airflow/dags
