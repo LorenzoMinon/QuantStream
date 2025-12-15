@@ -14,7 +14,7 @@ with DAG(
     default_args=default_args,
     description='ETL: converts json from bronze to silver',
     start_date=datetime(2023, 1, 1),
-    schedule_interval=None, # manual for now
+    schedule_interval='0 * * * *', # hourly
     catchup=False,
     tags=['silver', 'etl', 'pandas']
 ) as dag:
