@@ -2,7 +2,7 @@ version: '3'
 
 x-airflow-common:
   &airflow-common
-  image: apache/airflow:2.7.1
+  image: apache/airflow:2.7.1-python3.9
   environment:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: LocalExecutor
@@ -14,6 +14,8 @@ x-airflow-common:
     AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
     AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
     AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+    ALPHAVANTAGE_KEY: "6EFBH8KYFD8R8L6S"
+    _PIP_ADDITIONAL_REQUIREMENTS: pandas pyarrow psycopg2-binary yfinance==0.2.40
   volumes:
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
@@ -31,6 +33,8 @@ services:
       POSTGRES_USER: airflow
       POSTGRES_PASSWORD: airflow
       POSTGRES_DB: airflow
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "airflow"]
       interval: 5s
@@ -46,7 +50,7 @@ services:
       _AIRFLOW_WWW_USER_CREATE: 'true'
       _AIRFLOW_WWW_USER_USERNAME: airflow
       _AIRFLOW_WWW_USER_PASSWORD: airflow
-      _PIP_ADDITIONAL_REQUIREMENTS: pandas pyarrow
+      _PIP_ADDITIONAL_REQUIREMENTS: pandas pyarrow psycopg2-binary yfinance==0.2.40
 
   airflow-webserver:
     <<: *airflow-common
@@ -86,3 +90,5 @@ services:
       postgres:
         condition: service_healthy
     restart: always
+volumes:
+  postgres_data:
