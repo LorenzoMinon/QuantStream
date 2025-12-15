@@ -127,7 +127,7 @@ def fetch_prices_and_save(**context):
 with DAG(
     dag_id='05_dynamic_portfolio_update',
     default_args=default_args,
-    schedule_interval='@daily',
+    schedule_interval='0 * * * *',
     catchup=False,
     tags=['portfolio', 'dynamic', 'production']
 ) as dag:
